@@ -10,7 +10,6 @@ app.use(express.static(__dirname));
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors())
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         // set file storage
@@ -23,14 +22,12 @@ const storage = multer.diskStorage({
 })
 
 let upload = multer({storage: storage})
-
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
     database: "olshop"
 })
-
 // endpoint untuk menambah data barang baru
 app.post("/barang", upload.single("image"), (req, res) => {
     // prepare data
@@ -54,15 +51,12 @@ app.post("/barang", upload.single("image"), (req, res) => {
         // run query
         db.query(sql, data, (error, result) => {
             if(error) throw error
-
             res.json({
                 message: result.affectedRows + " data berhasil disimpan"
             })
         })
     }
 })
-
-// endpoint untuk mengubah data barang
 app.put("/barang", upload.single("image"), (req,res) => {
     let data = null, sql = null
     // paramter perubahan data
@@ -151,7 +145,6 @@ app.delete("/barang/:kode_barang", (req,res) => {
         }      
     })
 })
-
 // endpoint ambil data barang
 app.get("/barang", (req, res) => {
     // create sql query
@@ -169,5 +162,3 @@ app.get("/barang", (req, res) => {
 app.listen(8000, () =>{
     console.log("Server run on port 8000");
 })
-
-
